@@ -1,8 +1,8 @@
 export function luckyTicketsCount(cols) {
-  let total = 0;
+  let total = 0n;
 
   for (let i = 0; i <= cols * 9; i++) {
-    const cnt = getPossibleCombinations(i, cols);
+    const cnt = BigInt(getPossibleCombinations(i, cols));
     total += cnt * cnt;
   }
 
