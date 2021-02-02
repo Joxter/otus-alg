@@ -25,8 +25,8 @@ console.log('10> ', luckyTicketsCount(10)); // 3081918923741898000
 console.log('end');
 */
 
-function getPossibleCombinations(n, deep, sum = 0) {
-  if (deep < 1) {
+function getPossibleCombinations(n, col, sum = 0) {
+  if (col < 1) {
     return 0;
   }
 
@@ -38,12 +38,12 @@ function getPossibleCombinations(n, deep, sum = 0) {
       cnt++;
       break;
     }
-    if (sum > n) {
+    if (sum > n || n - sum > col * max) {
       break;
     }
 
-    if (deep > 0) {
-      cnt += getPossibleCombinations(n, deep - 1, sum + i);
+    if (col > 0) {
+      cnt += getPossibleCombinations(n, col - 1, sum + i);
     } else if (n - sum <= 9) {
       cnt++;
     }

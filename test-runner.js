@@ -12,6 +12,7 @@ function runner(dataFolder, cb) {
 
   let i = 0;
 
+  console.log(`Start. folder "${dataFolder}"`);
   while (files.includes(testIn(i))) {
     const input = readFileSync(dataFolder + testIn(i)).toString().trim();
     const expected = readFileSync(dataFolder + testOut(i)).toString().trim();
@@ -30,6 +31,7 @@ function runner(dataFolder, cb) {
 
     i++;
   }
+  console.log('Finish');
 }
 
 function time(msec) {
