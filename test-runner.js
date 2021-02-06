@@ -1,16 +1,22 @@
 import { readdirSync, readFileSync } from 'fs';
 import { count } from './hw1/0.solution.js';
 import { luckyTicketsCount } from './hw1/1.solution.js';
+import { powA, powB, powC } from './hw2/3.Solution.js';
 
-// const dataPath = './hw1/0.String/';
-const dataPath = './hw1/1.Tickets/';
+// './hw1/0.String/' './hw1/1.Tickets/'
+// './hw2/3.Power/'
 
-runner(dataPath, (inp) => String(luckyTicketsCount(inp)));
+runner('./hw2/3.Power/', (inp) => {
+  const [x, n] = inp.trim().split(/\s+/);
+  const res = powC(+x, +n);
+  return Number.isInteger(res) ? res.toFixed(1) : res.toFixed(11);
+}, {isVerbose: false});
 
-function runner(dataFolder, cb) {
+function runner(dataFolder, cb, {isVerbose}) {
   const files = readdirSync(dataFolder).filter((fileName) => fileName.includes('test'));
 
   let i = 0;
+  const totalStart = Date.now();
 
   console.log(`Start. folder "${dataFolder}"`);
   while (files.includes(testIn(i))) {
@@ -22,16 +28,16 @@ function runner(dataFolder, cb) {
     const duration = Date.now() - start;
 
     console.log(`Test #${i}`, result === expected ? '[OK]' : '[ERROR]', time(duration));
-    if (result !== expected) {
-      console.log(`| file: "${testIn(i)}"`);
+    if (result !== expected && isVerbose) {
       console.log(`| input: "${input}"`);
-      console.log(`| result: "${result}"`);
+      console.log(`| result:   "${result}"`);
       console.log(`| expected: "${expected}"`);
+      console.log(`--------------------`);
     }
 
     i++;
   }
-  console.log('Finish');
+  console.log(`Finish. Total time: ${time(Date.now() - totalStart)}`);
 }
 
 function time(msec) {
