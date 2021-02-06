@@ -1,15 +1,16 @@
 import { readdirSync, readFileSync } from 'fs';
 import { count } from './hw1/0.solution.js';
-import { luckyTicketsCount } from './hw1/1.solution.js';
+import { luckyTicketsCount, luckyTicketsCount2 } from './hw1/1.solution.js';
 import { powA, powB, powC } from './hw2/3.Solution.js';
 
 // './hw1/0.String/' './hw1/1.Tickets/'
 // './hw2/3.Power/'
 
-runner('./hw2/3.Power/', (inp) => {
-  const [x, n] = inp.trim().split(/\s+/);
-  const res = powC(+x, +n);
-  return Number.isInteger(res) ? res.toFixed(1) : res.toFixed(11);
+runner('./hw1/1.Tickets/', (inp) => {
+  // const [x, n] = inp.trim().split(/\s+/);
+  // const res = powC(+x, +n);
+  // return Number.isInteger(res) ? res.toFixed(1) : res.toFixed(11);
+  return String(luckyTicketsCount2(+inp))
 }, {isVerbose: false});
 
 function runner(dataFolder, cb, {isVerbose}) {

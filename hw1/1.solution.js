@@ -19,7 +19,6 @@ console.log('5> ', luckyTicketsCount(5)); // 432457640
 console.log('6> ', luckyTicketsCount(6)); // 39581170420
 console.log('7> ', luckyTicketsCount(7)); // 3671331273480
 console.log('8> ', luckyTicketsCount(8)); // 343900019857310
-//                                           9007199254740991 MAX SAFE INT
 console.log('9> ', luckyTicketsCount(9)); // 32458256583753920
 console.log('10> ', luckyTicketsCount(10)); // 3081918923741898000
 console.log('end');
@@ -50,4 +49,36 @@ function getPossibleCombinations(n, col, sum = 0) {
   }
 
   return cnt;
+}
+
+export function luckyTicketsCount2(cols) {
+  let curr = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
+
+  for (let i = 2; i <= cols; i++) {
+    curr = getPossibleCombinations2(curr);
+  }
+
+  return curr.map((n) => BigInt(n) * BigInt(n)).reduce((s, a) => s + a, 0n);
+}
+
+function getPossibleCombinations2(arr) {
+  const results = [];
+  for (let i = 0; i < 10; i++) {
+    let newArr = [];
+
+    for (let j = 0; j < i; j++) {
+      newArr.push(0);
+    }
+
+    results[i] = [...newArr, ...arr];
+  }
+
+  const res = [];
+  for (let i = 0; i < arr.length + 10; i++) {
+    let s = 0;
+    results.map((arr) => s += arr[i] || 0);
+    res.push(s);
+  }
+
+  return res;
 }
