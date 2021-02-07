@@ -2,15 +2,17 @@ import { readdirSync, readFileSync } from 'fs';
 import { count } from './hw1/0.solution.js';
 import { luckyTicketsCount, luckyTicketsCount2 } from './hw1/1.solution.js';
 import { powA, powB, powC } from './hw2/3.Solution.js';
+import { fibA, fibB, fibC, fibD } from './hw2/4.Solution.js';
 
 // './hw1/0.String/' './hw1/1.Tickets/'
-// './hw2/3.Power/'
+// './hw2/3.Power/' './hw2/4.Fibo/'
 
-runner('./hw1/1.Tickets/', (inp) => {
+runner('./hw2/4.Fibo/', (inp) => {
   // const [x, n] = inp.trim().split(/\s+/);
-  // const res = powC(+x, +n);
+  const res = fibD(+inp.trim());
+  return (typeof res === 'string') ? res : String(res);
   // return Number.isInteger(res) ? res.toFixed(1) : res.toFixed(11);
-  return String(luckyTicketsCount2(+inp))
+  // return String(luckyTicketsCount2(+inp))
 }, {isVerbose: false});
 
 function runner(dataFolder, cb, {isVerbose}) {
@@ -29,10 +31,13 @@ function runner(dataFolder, cb, {isVerbose}) {
     const duration = Date.now() - start;
 
     console.log(`Test #${i}`, result === expected ? '[OK]' : '[ERROR]', time(duration));
+
     if (result !== expected && isVerbose) {
+      const expected2 = expected.length > 20 ? expected.slice(0, 20) + `... total ${expected.length} chars` : expected;
+      const result2 = result.length > 20 ? result.slice(0, 20) + `... total ${result.length} chars` : result;
       console.log(`| input: "${input}"`);
-      console.log(`| result:   "${result}"`);
-      console.log(`| expected: "${expected}"`);
+      console.log(`| result:   "${result2}"`);
+      console.log(`| expected: "${expected2}"`);
       console.log(`--------------------`);
     }
 

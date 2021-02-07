@@ -8,5 +8,8 @@
   },
   "author": "",
   "type": "module",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "big-integer": "^1.6.48"
+  }
 }
