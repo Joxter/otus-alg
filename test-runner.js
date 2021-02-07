@@ -9,8 +9,8 @@ import { fibA, fibB, fibC, fibD } from './hw2/4.Solution.js';
 
 runner('./hw2/4.Fibo/', (inp) => {
   // const [x, n] = inp.trim().split(/\s+/);
-  const res = fibD(+inp.trim());
-  return (typeof res === 'string') ? res : String(res);
+  return fibB(+inp.trim());
+  // return (typeof res === 'string') ? res : String(res);
   // return Number.isInteger(res) ? res.toFixed(1) : res.toFixed(11);
   // return String(luckyTicketsCount2(+inp))
 }, {isVerbose: false});
@@ -29,10 +29,11 @@ function runner(dataFolder, cb, {isVerbose}) {
     const start = Date.now();
     const result = cb(input);
     const duration = Date.now() - start;
+    const isOk = result == expected;
 
-    console.log(`Test #${i}`, result === expected ? '[OK]' : '[ERROR]', time(duration));
+    console.log(`Test #${i}`, isOk ? '[OK]' : '[ERROR]', time(duration));
 
-    if (result !== expected && isVerbose) {
+    if (!isOk && isVerbose) {
       const expected2 = expected.length > 20 ? expected.slice(0, 20) + `... total ${expected.length} chars` : expected;
       const result2 = result.length > 20 ? result.slice(0, 20) + `... total ${result.length} chars` : result;
       console.log(`| input: "${input}"`);

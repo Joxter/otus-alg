@@ -9,7 +9,5 @@
   "author": "",
   "type": "module",
   "license": "ISC",
-  "dependencies": {
-    "big-integer": "^1.6.48"
-  }
+  "dependencies": {}
 }
