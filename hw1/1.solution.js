@@ -62,21 +62,14 @@ export function luckyTicketsCount2(cols) {
 }
 
 function getPossibleCombinations2(arr) {
-  const results = [];
-  for (let i = 0; i < 10; i++) {
-    let newArr = [];
+  const res = [];
+  for (let i = 0; i < arr.length + 9; i++) {
+    let s = 0;
 
-    for (let j = 0; j < i; j++) {
-      newArr.push(0);
+    for (let j = 0; j < 10; j++) {
+      s += arr[i - j] || 0;
     }
 
-    results[i] = [...newArr, ...arr];
-  }
-
-  const res = [];
-  for (let i = 0; i < arr.length + 10; i++) {
-    let s = 0;
-    results.map((arr) => s += arr[i] || 0);
     res.push(s);
   }
 
