@@ -3,17 +3,16 @@ import { count } from './hw1/0.solution.js';
 import { luckyTicketsCount, luckyTicketsCount2 } from './hw1/1.solution.js';
 import { powA, powB, powC } from './hw2/3.Solution.js';
 import { fibA, fibB, fibC, fibD } from './hw2/4.Solution.js';
+import { primeA, primeB, primeC } from './hw2/5.Solution.js';
 
 // './hw1/0.String/' './hw1/1.Tickets/'
-// './hw2/3.Power/' './hw2/4.Fibo/'
+// './hw2s/3.Power/' './hw2/4.Fibo/' './hw2/5.Primes/'
 
-runner('./hw2/4.Fibo/', (inp) => {
+runner('./hw2/5.Primes/', (inp) => {
   // const [x, n] = inp.trim().split(/\s+/);
-  return fibB(+inp.trim());
+  return primeC(+inp.trim());
   // return (typeof res === 'string') ? res : String(res);
-  // return Number.isInteger(res) ? res.toFixed(1) : res.toFixed(11);
-  // return String(luckyTicketsCount2(+inp))
-}, {isVerbose: false});
+}, {isVerbose: true});
 
 function runner(dataFolder, cb, {isVerbose}) {
   const files = readdirSync(dataFolder).filter((fileName) => fileName.includes('test'));
