@@ -1,13 +1,3 @@
-/*
-Test #7  [OK] time: 0:00.001
-Test #8  [OK] time: 0:00.007
-Test #9  [OK] time: 0:00.007
-Test #10 [OK] time: 0:00.114
-Test #11 [OK] time: 0:02.960
-Test #12 [OK] time: 1:19.445
-Test #13 -
-Test #14 -
-*/
 export function primeA(n) {
   let cnt = 0;
 
@@ -34,15 +24,6 @@ function isPrime(x) {
   return true;
 }
 
-/*
-Test #7  [OK] time: 0:00.000
-Test #8  [OK] time: 0:00.009
-Test #9  [OK] time: 0:00.007
-Test #10 [OK] time: 0:00.067
-Test #11 [OK] time: 0:01.258
-Test #12 [OK] time: 0:26.720
-Test #13 -
-*/
 let primes = [];
 
 export function primeB(n) {
@@ -68,16 +49,6 @@ function isPrimeB(x) {
   return true;
 }
 
-/*
-Test #7  [OK] time: 0:00.001
-Test #8  [OK] time: 0:00.004
-Test #9  [OK] time: 0:00.011
-Test #10 [OK] time: 0:00.074
-Test #11 [OK] time: 0:00.779
-Test #12 [OK] time: 0:11.085
-Test #13 - Out Of Memory Error
-Test #14 - Out Of Memory Error
-*/
 export function primeC(n) {
   const erat = Array.from({length: n + 1}).fill(false);
   let cnt = 0;

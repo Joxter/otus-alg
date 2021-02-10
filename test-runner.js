@@ -1,27 +1,18 @@
-import { readdirSync, readFileSync } from 'fs';
-import { count } from './hw1/0.solution.js';
-import { luckyTicketsCount, luckyTicketsCount2 } from './hw1/1.solution.js';
-import { powA, powB, powC } from './hw2/3.Solution.js';
-import { fibA, fibB, fibC, fibD } from './hw2/4.Solution.js';
-import { primeA, primeB, primeC } from './hw2/5.Solution.js';
+import { readFileSync, existsSync } from 'fs';
 
-// './hw1/0.String/' './hw1/1.Tickets/'
-// './hw2s/3.Power/' './hw2/4.Fibo/' './hw2/5.Primes/'
-
-runner('./hw2/5.Primes/', (inp) => {
-  // const [x, n] = inp.trim().split(/\s+/);
-  return primeC(+inp.trim());
-  // return (typeof res === 'string') ? res : String(res);
-}, {isVerbose: true});
-
-function runner(dataFolder, cb, {isVerbose}) {
-  const files = readdirSync(dataFolder).filter((fileName) => fileName.includes('test'));
+export function testRunner(dataFolder, cb, {isVerbose} = {}) {
+  if (!dataFolder.includes('results.js')) {
+    throw Error('Нужно запускать тест из файла results.js');
+  }
+  dataFolder = dataFolder.replace('results.js', '');
+  dataFolder = dataFolder.replace('file:///C:', '');
+  console.log(dataFolder);
 
   let i = 0;
   const totalStart = Date.now();
 
-  console.log(`Start. folder "${dataFolder}"`);
-  while (files.includes(testIn(i))) {
+  console.log(`Start`);
+  while (existsSync(dataFolder + testIn(i))) {
     const input = readFileSync(dataFolder + testIn(i)).toString().trim();
     const expected = readFileSync(dataFolder + testOut(i)).toString().trim();
 
@@ -30,7 +21,7 @@ function runner(dataFolder, cb, {isVerbose}) {
     const duration = Date.now() - start;
     const isOk = result == expected;
 
-    console.log(`Test #${i}`, isOk ? '[OK]' : '[ERROR]', time(duration));
+    console.log(`Test #${i}${i < 10 ? ' ' : ''}`, isOk ? ' [OK] ' : '[FAIL]', time(duration));
 
     if (!isOk && isVerbose) {
       const expected2 = expected.length > 20 ? expected.slice(0, 20) + `... total ${expected.length} chars` : expected;
@@ -49,8 +40,9 @@ function runner(dataFolder, cb, {isVerbose}) {
 function time(msec) {
   const sec = msec / 1000;
   const min = Math.floor(sec / 60);
+  const letfSec = sec % 60;
 
-  return `time: ${min}:${(sec % 60).toFixed(3)}`;
+  return `time: ${min}:${letfSec < 10 ? '0' : ''}${letfSec.toFixed(3)}`;
 }
 
 function testIn(i) {
@@ -59,4 +51,15 @@ function testIn(i) {
 
 function testOut(i) {
   return `test.${i}.out`;
+}
+
+export function printProgress(str) {
+  process.stdout.clearLine();
+  process.stdout.cursorTo(0);
+  process.stdout.write(str);
+}
+
+export function finishProgress() {
+  process.stdout.clearLine();
+  process.stdout.cursorTo(0);
 }

@@ -12,16 +12,11 @@ export function fibB(n) {
   let result;
 
   for (let i = 1; i < n; i++) {
-    if (i % 10000 === 0) {
-      const perc = (i / n) * 100;
-      printProgress(`${i}/${n}, ${perc.toFixed(1)}%`);
-    }
     result = f1 + f0;
 
     f0 = f1;
     f1 = result;
   }
-  finishProgress();
 
   return result;
 }
@@ -78,15 +73,4 @@ function pow2Matrix(m, n) {
   }
 
   return m;
-}
-
-function printProgress(str) {
-  process.stdout.clearLine();
-  process.stdout.cursorTo(0);
-  process.stdout.write(str);
-}
-
-function finishProgress() {
-  process.stdout.clearLine();
-  process.stdout.cursorTo(0);
 }
