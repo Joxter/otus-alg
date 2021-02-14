@@ -24,8 +24,8 @@ export function testRunner(dataFolder, cb, {isVerbose} = {}) {
     console.log(`Test #${i}${i < 10 ? ' ' : ''}`, isOk ? ' [OK] ' : '[FAIL]', time(duration));
 
     if (!isOk && isVerbose) {
-      const expected2 = expected.length > 20 ? expected.slice(0, 20) + `... total ${expected.length} chars` : expected;
-      const result2 = result.length > 20 ? result.slice(0, 20) + `... total ${result.length} chars` : result;
+      const expected2 = expected.length > 50 ? expected.slice(0, 50) + `... total ${expected.length} chars` : expected;
+      const result2 = result.length > 50 ? result.slice(0, 50) + `... total ${result.length} chars` : result;
       console.log(`| input: "${input}"`);
       console.log(`| result:   "${result2}"`);
       console.log(`| expected: "${expected2}"`);
