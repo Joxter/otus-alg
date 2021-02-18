@@ -1,6 +1,15 @@
 export function res(n) {
-  const b = last64(n.toString(2));
-  return `${b.replace(/0/g, '').length}\r\n${BigInt('0b' + b)}`;
+  let bits = last64(n.toString(2)); // не придумал другого для JS ограничить число только 64 битами
+  const position = BigInt('0b' + bits);
+
+  let pos = position;
+  let countOfOne = 0;
+  while (pos) {
+    pos = pos - 1n & pos;
+    countOfOne++;
+  }
+
+  return `${countOfOne}\r\n${position}`;
 }
 
 export function board(n) {
@@ -17,11 +26,11 @@ export function last64(n) {
   return n.slice(n.length - 64, n.length);
 }
 
-export const NO_1 = 9187201950435737471n;
-export const NO_2 = 13816973012072644543n;
-export const NO_3 = 16131858542891098079n;
-export const NO_4 = 17289301308300324847n;
-export const NO_5 = 17868022691004938231n;
-export const NO_6 = 18157383382357244923n;
-export const NO_7 = 18302063728033398269n;
-export const NO_8 = 18374403900871474942n;
+export const NO_1 = 0x7f7f7f7f7f7f7f7fn;
+export const NO_2 = 0xbfbfbfbfbfbfbfbfn;
+export const NO_3 = 0xdfdfdfdfdfdfdfdfn;
+export const NO_4 = 0xefefefefefefefefn;
+export const NO_5 = 0xf7f7f7f7f7f7f7f7n;
+export const NO_6 = 0xfbfbfbfbfbfbfbfbn;
+export const NO_7 = 0xfdfdfdfdfdfdfdfdn;
+export const NO_8 = 0xfefefefefefefefen;
