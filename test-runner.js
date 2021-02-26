@@ -37,7 +37,7 @@ export function testRunner(dataFolder, cb, {isVerbose} = {}) {
   console.log(`Finish. Total time: ${time(Date.now() - totalStart)}`);
 }
 
-function time(msec) {
+export function time(msec) {
   const sec = msec / 1000;
   const min = Math.floor(sec / 60);
   const letfSec = sec % 60;
