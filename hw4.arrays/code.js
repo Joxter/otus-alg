@@ -19,7 +19,7 @@ export class MatrixArray {
     }
     this.length++;
     if (this.length === this.arrSize * this.arrays.length) {
-      this.arrays.push(this._newArr());
+      this._arraysPush();
     }
 
     const [arrIndex, innerIndex] = this._getAddress(this.length - 1);
@@ -48,16 +48,37 @@ export class MatrixArray {
     this.length--;
 
     if (Math.ceil(this.length / this.arrSize) < this.arrays.length) {
-      this.arrays.pop();
+      this._arraysPop();
     }
 
     return item;
   }
 
+  _arraysPush() {
+    const newArrays = Array.from({length: this.arrays.length});
+
+    for (let i = 0; i < this.arrays.length; i++) {
+      newArrays[i] = this.arrays[i];
+    }
+    newArrays[this.arrays.length] = this._newArr();
+
+    this.arrays = newArrays;
+  }
+
+  _arraysPop() {
+    const newArrays = Array.from({length: this.arrays.length - 1});
+
+    for (let i = 0; i < this.arrays.length - 1; i++) {
+      newArrays[i] = this.arrays[i];
+    }
+
+    this.arrays = newArrays;
+  }
+
   _addTo(value, index) {
     this.length++;
     if (this.length === this.arrSize * this.arrays.length) {
-      this.arrays.push(this._newArr());
+      this._arraysPush();
     }
 
     const [arrIndex, innerIndex] = this._getAddress(index);
