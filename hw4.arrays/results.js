@@ -33,7 +33,7 @@ function testArray(title, arr, N) {
 
   const start = Date.now();
   for (let i = 0; i < n; i++) {
-    arr.add(i);
+    // arr.add(i);
   }
   const duration = Date.now() - start;
 

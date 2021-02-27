@@ -1,11 +1,10 @@
 import { readFileSync, existsSync } from 'fs';
 
 export function testRunner(dataFolder, cb, {isVerbose} = {}) {
-  if (!dataFolder.includes('results.js')) {
-    throw Error('Нужно запускать тест из файла results.js');
+  if (dataFolder.includes('results.js')) {
+    dataFolder = dataFolder.replace('results.js', '');
+    dataFolder = dataFolder.replace('file:///C:', '');
   }
-  dataFolder = dataFolder.replace('results.js', '');
-  dataFolder = dataFolder.replace('file:///C:', '');
   console.log(dataFolder);
 
   let i = 0;
