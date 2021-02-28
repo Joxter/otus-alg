@@ -48,10 +48,7 @@ import { testRunner } from '../test-runner.js';
  * */
 // testRunner('C:\\projects\\otus-alg\\hw5\\3.revers\\', testSelectionSort);
 
-// console.log(selectionSort([34, 4, 93, 2, 58, 462, 98, 37]));
-
 function selectionSort(arr) {
-  // console.log('>', arr.join(', '));
   for (let i = 0; i < arr.length - 1; i++) {
     for (let j = i + 1; j < arr.length; j++) {
       if (arr[i] > arr[j]) {
@@ -60,7 +57,6 @@ function selectionSort(arr) {
         arr[j] = t;
       }
     }
-    // console.log('>', arr.join(', '));
   }
 
   return arr;

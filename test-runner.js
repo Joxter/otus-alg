@@ -20,7 +20,7 @@ export function testRunner(dataFolder, cb, {isVerbose} = {}) {
     const duration = Date.now() - start;
     const isOk = result == expected;
 
-    console.log(`Test #${i}${i < 10 ? ' ' : ''}`, isOk ? ' [OK] ' : '[FAIL]', time(duration));
+    console.log(` * Test #${i}${i < 10 ? ' ' : ''}`, isOk ? ' [OK] ' : '[FAIL]', time(duration));
 
     if (!isOk && isVerbose) {
       const expected2 = expected.length > 50 ? expected.slice(0, 50) + `... total ${expected.length} chars` : expected;
