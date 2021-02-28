@@ -1,8 +1,6 @@
 import { testRunner } from '../test-runner.js';
 
 /**
- * Перемешаннй массив длиной N из значений от 0 до N-1
- *
  * Test #0   [OK]  time: 0:00.000       1
  * Test #1   [OK]  time: 0:00.000      10
  * Test #2   [OK]  time: 0:00.001     100
@@ -15,8 +13,6 @@ import { testRunner } from '../test-runner.js';
 // testRunner('C:\\projects\\otus-alg\\hw5\\0.random\\', testBubbleSort);
 
 /**
- * Перемешаный массив длиной N из значений от 0 до 9
- *
  * Test #0   [OK]  time: 0:00.000       1
  * Test #1   [OK]  time: 0:00.000      10
  * Test #2   [OK]  time: 0:00.000     100
@@ -29,8 +25,6 @@ import { testRunner } from '../test-runner.js';
 // testRunner('C:\\projects\\otus-alg\\hw5\\1.digits\\', testBubbleSort);
 
 /**
- * Почти полностью отсортированный массив длиной N из значений от 0 до N-1
- *
  * Test #0   [OK]  time: 0:00.000       1
  * Test #1   [OK]  time: 0:00.000      10
  * Test #2   [OK]  time: 0:00.000     100
@@ -43,8 +37,6 @@ import { testRunner } from '../test-runner.js';
 // testRunner('C:\\projects\\otus-alg\\hw5\\2.sorted\\', testBubbleSort);
 
 /**
- * Обратно отсортированный массив длиной N из значений от 0 до N-1
- *
  * Test #0   [OK]  time: 0:00.000       1
  * Test #1   [OK]  time: 0:00.000      10
  * Test #2   [OK]  time: 0:00.001     100
