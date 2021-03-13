@@ -88,52 +88,55 @@ export class BinaryTree {
   }
 
   remove(value) {
+    if (!this.head) return;
+
     let target = this.head;
     let parent = null;
 
-    while (target) {
-      if (target.value === value) {
-        // todo "parent" может отсутствовать, если удаляем корень
-
-        if (this._isLeaf(target)) {
-          if (parent.L === target) parent.L = null;
-          if (parent.R === target) parent.R = null;
-          return;
-        }
-
-        if (this._isOneBranch(target)) {
-          const one = target.L || target.R;
-          if (parent.L === target) parent.L = one;
-          if (parent.R === target) parent.R = one;
-          return;
-        }
-
-        let newParent = target;
-        let lastR = target.L;
-        while (lastR.R) {
-          newParent = lastR;
-          lastR = lastR.R;
-        }
-
-        if (parent.L === target) parent.L = lastR;
-        if (parent.R === target) parent.R = lastR;
-        if (newParent !== target) {
-          newParent.R = lastR.L;
-          lastR.L = target.L;
-        }
-        lastR.R = target.R;
-        return;
-      }
-
+    // находим узел который нужно удалить и его родителя
+    while (target.value !== value) {
       parent = target;
       if (value > target.value) {
         target = target.R;
       } else if (value < target.value) {
-        parent = target;
         target = target.L;
       }
     }
-    return;
+
+    const moveToParent = (node) => {
+      if (!parent) { // родителя нет только, если пытаемся удалить корень
+        this.head = node;
+        return;
+      }
+      if (parent.L === target) parent.L = node;
+      if (parent.R === target) parent.R = node;
+    };
+
+    if (this._isLeaf(target)) {
+      moveToParent(null);
+      return;
+    }
+
+    if (this._isOneBranch(target)) {
+      moveToParent(target.L || target.R);
+      return;
+    }
+
+    let lastR = target.L;
+    let lastRParent = target;
+    while (lastR.R) {
+      lastRParent = lastR;
+      lastR = lastR.R;
+    }
+
+    moveToParent(lastR);
+    if (lastRParent !== target) {
+      // нужно, когда у нас у левого потомка (1) был хотя бы один правый потомок (2).
+      // тогда родителю потомка-1 навешимаем детей потомка-2
+      lastRParent.R = lastR.L;
+      lastR.L = target.L;
+    }
+    lastR.R = target.R;
   }
 
   print() {
@@ -197,14 +200,35 @@ export class BinaryTree {
   }
 }
 
-const tree = new BinaryTree();
+(() => {
+  const tree = new BinaryTree();
+  tree.insert(10);
+  tree.insert(20);
+  console.log(tree.print() === ' 10 20');
+  tree.remove(10);
+  console.log(tree.print() === ' 20');
+  tree.remove(20);
+  console.log(tree.print() === '');
+})();
 
+(() => {
+  const tree = new BinaryTree();
+  tree.insert(10);
+  tree.insert(15);
+  tree.insert(5);
+  console.log(tree.print() === ' 5 10 15');
+  // console.log(tree.printTree());
+  // console.log('-----------');
+  tree.remove(10);
+  console.log(tree.print() === ' 5 15');
+  // console.log(tree.printTree());
+  // console.log('-----------');
+})();
+
+const tree = new BinaryTree();
 tree.insert(10);
 tree.insert(20);
 tree.insert(14);
-// console.log(tree.print());
-// console.log(tree.printTree());
-// console.log('--------------');
 tree.insert(5);
 tree.insert(8);
 tree.insert(40);
@@ -222,7 +246,10 @@ console.log(tree.print() === ' 5 6 8 10 12 14 15 16 40 44');
 // console.log('--------------------------');
 tree.remove(14);
 console.log(tree.print() === ' 5 6 8 10 12 15 16 40 44');
-// console.log(tree.printTree());
+tree.remove(44);
+console.log(tree.print() === ' 5 6 8 10 12 15 16 40');
+tree.remove(8);
+console.log(tree.print() === ' 5 6 10 12 15 16 40');
 
 console.log(tree.search(2) === false);
 console.log(tree.search(5) === true);
