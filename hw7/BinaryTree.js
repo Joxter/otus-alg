@@ -11,7 +11,7 @@ export class BinaryTree {
     this.head = null;
   }
 
-  insert(value) { // todo обработать добавление элемента который уже есть
+  insert(value) {
     const node = {
       value,
       L: null,
@@ -84,11 +84,7 @@ export class BinaryTree {
   }
 
   _isOneBranch(node) {
-    if ((!node.L && node.R) || (node.L && !node.R)) {
-      return node.L || node.R;
-    }
-
-    return false;
+    return (!node.L && node.R) || (node.L && !node.R);
   }
 
   remove(value) {
@@ -105,19 +101,27 @@ export class BinaryTree {
           return;
         }
 
-        const one = this._isOneBranch(target);
-        if (one) {
+        if (this._isOneBranch(target)) {
+          const one = target.L || target.R;
           if (parent.L === target) parent.L = one;
           if (parent.R === target) parent.R = one;
           return;
         }
 
-        // todo доделать
-        if (target === parent.L) {
-          parent.L = target;
-        } else {
-
+        let newParent = target;
+        let lastR = target.L;
+        while (lastR.R) {
+          newParent = lastR;
+          lastR = lastR.R;
         }
+
+        if (parent.L === target) parent.L = lastR;
+        if (parent.R === target) parent.R = lastR;
+        if (newParent !== target) {
+          newParent.R = lastR.L;
+          lastR.L = target.L;
+        }
+        lastR.R = target.R;
         return;
       }
 
@@ -198,9 +202,9 @@ const tree = new BinaryTree();
 tree.insert(10);
 tree.insert(20);
 tree.insert(14);
-console.log(tree.print());
-console.log(tree.printTree());
-console.log('--------------');
+// console.log(tree.print());
+// console.log(tree.printTree());
+// console.log('--------------');
 tree.insert(5);
 tree.insert(8);
 tree.insert(40);
@@ -208,8 +212,17 @@ tree.insert(12);
 tree.insert(44);
 tree.insert(6);
 tree.insert(16);
-console.log(tree.print());
-console.log(tree.printTree());
+tree.insert(15);
+console.log(tree.print() === ' 5 6 8 10 12 14 15 16 20 40 44');
+// console.log(tree.printTree());
+// console.log('--------------------------');
+tree.remove(20);
+console.log(tree.print() === ' 5 6 8 10 12 14 15 16 40 44');
+// console.log(tree.printTree());
+// console.log('--------------------------');
+tree.remove(14);
+console.log(tree.print() === ' 5 6 8 10 12 15 16 40 44');
+// console.log(tree.printTree());
 
 console.log(tree.search(2) === false);
-console.log(tree.search(20) === true);
+console.log(tree.search(5) === true);
