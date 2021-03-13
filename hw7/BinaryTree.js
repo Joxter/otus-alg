@@ -61,13 +61,59 @@ export class BinaryTree {
     return false;
   }
 
-  remove(value) { // todo прото не сделано
+  _lastRight(node) {
+    if (!node) return null;
+
+    while (node.R) {
+      node = node.R;
+    }
+    return node;
+  }
+
+  _lastLeft(node) {
+    if (!node) return null;
+
+    while (node.L) {
+      node = node.L;
+    }
+    return node;
+  }
+
+  _isLeaf(node) {
+    return !node.L && !node.R;
+  }
+
+  _isOneBranch(node) {
+    if ((!node.L && node.R) || (node.L && !node.R)) {
+      return node.L || node.R;
+    }
+
+    return false;
+  }
+
+  remove(value) {
     let target = this.head;
     let parent = null;
 
     while (target) {
       if (target.value === value) {
-        if (target === parent.L) { // todo "parent" может отсутствовать, если удаляем корень
+        // todo "parent" может отсутствовать, если удаляем корень
+
+        if (this._isLeaf(target)) {
+          if (parent.L === target) parent.L = null;
+          if (parent.R === target) parent.R = null;
+          return;
+        }
+
+        const one = this._isOneBranch(target);
+        if (one) {
+          if (parent.L === target) parent.L = one;
+          if (parent.R === target) parent.R = one;
+          return;
+        }
+
+        // todo доделать
+        if (target === parent.L) {
           parent.L = target;
         } else {
 
@@ -99,7 +145,51 @@ export class BinaryTree {
     };
 
     _print(this.head);
-    console.log(log);
+    return log;
+  }
+
+  printTree() {
+    let log = [[], [], [], [], []];
+    const offsets = [
+      [0, 1],
+      [2, 5],
+      [6, 13],
+      [14, 29],
+      [30, 61],
+    ];
+
+    function _print(node, level) {
+      if (offsets.length <= level) return;
+
+      _print(node && node.L, level + 1);
+      log[level].push(node && node.value || null);
+      _print(node && node.R, level + 1);
+    }
+
+    _print(this.head, 0);
+
+    return log
+      .map((logLevel, i) => {
+        let [offset, separator] = offsets[log.length - i - 1];
+        offset = getSpaceString(offset);
+        separator = getSpaceString(separator);
+
+        return offset + logLevel.map(value => formatValue(value)).join(separator);
+      })
+      .filter(logStr => !isEmptyLogString(logStr))
+      .join('\n');
+
+    function formatValue(val) {
+      return val === null ? ' - ' : String(val).padStart(3, '0');
+    }
+
+    function getSpaceString(len) {
+      return ''.padStart(len, ' ');
+    }
+
+    function isEmptyLogString(logStr) {
+      return (/^[ -]+$/.test(logStr));
+    }
   }
 }
 
@@ -108,11 +198,18 @@ const tree = new BinaryTree();
 tree.insert(10);
 tree.insert(20);
 tree.insert(14);
-tree.print();
+console.log(tree.print());
+console.log(tree.printTree());
+console.log('--------------');
 tree.insert(5);
+tree.insert(8);
 tree.insert(40);
-tree.print();
+tree.insert(12);
+tree.insert(44);
+tree.insert(6);
+tree.insert(16);
+console.log(tree.print());
+console.log(tree.printTree());
 
-console.log(tree.search(2));
-console.log(tree.search(10));
-console.log(tree.search(40));
+console.log(tree.search(2) === false);
+console.log(tree.search(20) === true);
