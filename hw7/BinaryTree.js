@@ -61,24 +61,6 @@ export class BinaryTree {
     return false;
   }
 
-  _lastRight(node) {
-    if (!node) return null;
-
-    while (node.R) {
-      node = node.R;
-    }
-    return node;
-  }
-
-  _lastLeft(node) {
-    if (!node) return null;
-
-    while (node.L) {
-      node = node.L;
-    }
-    return node;
-  }
-
   _isLeaf(node) {
     return !node.L && !node.R;
   }
@@ -101,9 +83,13 @@ export class BinaryTree {
       } else if (value < target.value) {
         target = target.L;
       }
+      if (!target) {
+        console.log(`There is no ${value} in the tree`);
+        return;
+      }
     }
 
-    const moveToParent = (node) => {
+    const replaceTarget = (node) => {
       if (!parent) { // родителя нет только, если пытаемся удалить корень
         this.head = node;
         return;
@@ -113,12 +99,12 @@ export class BinaryTree {
     };
 
     if (this._isLeaf(target)) {
-      moveToParent(null);
+      replaceTarget(null);
       return;
     }
 
     if (this._isOneBranch(target)) {
-      moveToParent(target.L || target.R);
+      replaceTarget(target.L || target.R);
       return;
     }
 
@@ -129,7 +115,7 @@ export class BinaryTree {
       lastR = lastR.R;
     }
 
-    moveToParent(lastR);
+    replaceTarget(lastR);
     if (lastRParent !== target) {
       // нужно, когда у нас у левого потомка (1) был хотя бы один правый потомок (2).
       // тогда родителю потомка-1 навешимаем детей потомка-2
@@ -200,6 +186,7 @@ export class BinaryTree {
   }
 }
 
+/*
 (() => {
   const tree = new BinaryTree();
   tree.insert(10);
@@ -253,3 +240,4 @@ console.log(tree.print() === ' 5 6 10 12 15 16 40');
 
 console.log(tree.search(2) === false);
 console.log(tree.search(5) === true);
+*/
