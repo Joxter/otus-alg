@@ -19,6 +19,15 @@ export class AVLTree extends BinaryTree {
     this.setR(node, par8);
   }
 
+  smallLeftRotation(node) {
+    const par8 = node.parent;
+    const C = node.L;
+
+    this.replaceNode(par8, node);
+    this.setR(par8, C);
+    this.setL(node, par8);
+  }
+
   replaceNode(node, newNode) {
     if (!node.parent) {
       this.head = newNode;
