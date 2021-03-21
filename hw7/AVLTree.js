@@ -1,4 +1,4 @@
-import { BinaryTree } from './BinaryTree';
+import { BinaryTree } from './BinaryTree.js';
 
 export class AVLTree extends BinaryTree {
   constructor() {
@@ -6,10 +6,49 @@ export class AVLTree extends BinaryTree {
     this.head = null;
   }
 
+  // rebalance(Tree t)
+  // smallLeftRotation(Tree t), smallRightRotation(Tree t) - малое левое/правое вращение
+  // bigLeftRotation(Tree t), bigRightRotation(Tree t)
+
+  smallRightRotation(node) {
+    const par8 = node.parent;
+    const C = node.R;
+
+    this.replaceNode(par8, node);
+    this.setL(par8, C);
+    this.setR(node, par8);
+  }
+
+  replaceNode(node, newNode) {
+    if (!node.parent) {
+      this.head = newNode;
+      return;
+    }
+
+    if (node.parent.L === node) {
+      node.parent.L = newNode;
+    } else {
+      node.parent.R = newNode;
+    }
+    newNode.parent = node;
+    node.parent = null;
+  }
+
+  setR(base, node) { // todo create as Node class method
+    base.R = node;
+    node.parent = base;
+  }
+
+  setL(base, node) { // todo create as Node class method
+    base.L = node;
+    node.parent = base;
+  }
+
   insert(value) {
     const node = {
       value,
       deep: 1,
+      parent: null,
       L: null,
       R: null,
     };
@@ -24,21 +63,21 @@ export class AVLTree extends BinaryTree {
     while (target) {
       if (value > target.value) {
         if (!target.R) {
-          target.R = node;
-          return;
+          this.setR(target, node);
+          return node;
         }
         target = target.R;
       } else if (value < target.value) {
         if (!target.L) {
-          target.L = node;
-          return;
+          this.setL(target, node);
+          return node;
         }
         target = target.L;
       }
     }
   }
 
-  remove(value) {
+  remove(value) { // todo implement
     if (!this.head) return;
 
     let target = this.head;
