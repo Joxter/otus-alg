@@ -7,40 +7,53 @@ export class AVLTree extends BinaryTree {
   }
 
   // rebalance(Tree t)
-  // smallLeftRotation(Tree t), smallRightRotation(Tree t) - малое левое/правое вращение
-  // bigLeftRotation(Tree t), bigRightRotation(Tree t)
 
   smallRightRotation(node) {
-    const par8 = node.parent;
-    const C = node.R;
+    const oldL = node.L;
+    const oldParent = node.parent;
+    this.setL(node, node.L.R);
+    this.setR(oldL, node);
 
-    this.replaceNode(par8, node);
-    this.setL(par8, C);
-    this.setR(node, par8);
+    if (oldParent) {
+      if (oldParent.L === oldL) {
+        this.setL(oldParent, oldL);
+      } else {
+        this.setR(oldParent, oldL);
+      }
+    }
+
+    if (this.head === node) {
+      this.head = oldL;
+    }
   }
 
   smallLeftRotation(node) {
-    const par8 = node.parent;
-    const C = node.L;
+    const oldR = node.R;
+    const oldParent = node.parent;
+    this.setR(node, node.R.L);
+    this.setL(oldR, node);
 
-    this.replaceNode(par8, node);
-    this.setR(par8, C);
-    this.setL(node, par8);
+    if (oldParent) {
+      if (oldParent.L === oldR) {
+        this.setR(oldParent, oldR);
+      } else {
+        this.setL(oldParent, oldR);
+      }
+    }
+
+    if (this.head === node) {
+      this.head = oldR;
+    }
   }
 
-  replaceNode(node, newNode) {
-    if (!node.parent) {
-      this.head = newNode;
-      return;
-    }
+  bigRightRotation(node) {
+    this.smallLeftRotation(node.L);
+    this.smallRightRotation(node);
+  }
 
-    if (node.parent.L === node) {
-      node.parent.L = newNode;
-    } else {
-      node.parent.R = newNode;
-    }
-    newNode.parent = node;
-    node.parent = null;
+  bigLeftRotation(node) {
+    this.smallRightRotation(node.R);
+    this.smallLeftRotation(node);
   }
 
   setR(base, node) { // todo create as Node class method
@@ -64,7 +77,7 @@ export class AVLTree extends BinaryTree {
 
     if (!this.head) {
       this.head = node;
-      return;
+      return node;
     }
 
     let target = this.head;
