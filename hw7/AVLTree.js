@@ -25,6 +25,8 @@ export class AVLTree extends BinaryTree {
     if (this.head === node) {
       this.head = oldL;
     }
+
+    this.recountNode(oldL);
   }
 
   smallLeftRotation(node) {
@@ -44,16 +46,20 @@ export class AVLTree extends BinaryTree {
     if (this.head === node) {
       this.head = oldR;
     }
+
+    this.recountNode(oldR);
   }
 
   bigRightRotation(node) {
     this.smallLeftRotation(node.L);
     this.smallRightRotation(node);
+    this.recountNode(node.parent.L);
   }
 
   bigLeftRotation(node) {
     this.smallRightRotation(node.R);
     this.smallLeftRotation(node);
+    this.recountNode(node.parent.R);
   }
 
   setR(base, node) { // todo create as Node class method
@@ -86,16 +92,31 @@ export class AVLTree extends BinaryTree {
       if (value > target.value) {
         if (!target.R) {
           this.setR(target, node);
-          return node;
+          break;
         }
         target = target.R;
       } else if (value < target.value) {
         if (!target.L) {
           this.setL(target, node);
-          return node;
+          break;
         }
         target = target.L;
       }
+    }
+
+    this.recountNode(node.parent);
+
+    return node;
+  }
+
+  recountNode(node) {
+    const max = Math.max(node.L && node.L.deep || 0, node.R && node.R.deep || 0);
+    const oldDeep = node.deep;
+
+    node.deep = max + 1;
+
+    if (oldDeep !== node.deep && node.parent) {
+      this.recountNode(node.parent);
     }
   }
 

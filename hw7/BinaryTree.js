@@ -155,7 +155,7 @@ export class BinaryTree {
       if (offsets.length <= level) return;
 
       _print(node && node.L, level + 1);
-      log[level].push(node && node.value || null);
+      log[level].push(node ? (node.deep * 100 + node.value) : null); //  value deep
       _print(node && node.R, level + 1);
     }
 
@@ -169,7 +169,7 @@ export class BinaryTree {
 
         return offset + logLevel.map(value => formatValue(value)).join(separator);
       })
-      .filter(logStr => !isEmptyLogString(logStr))
+      // .filter(logStr => !isEmptyLogString(logStr))
       .join('\n');
 
     function formatValue(val) {
