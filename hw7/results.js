@@ -2,7 +2,7 @@ import { time } from '../test-runner.js';
 import { BinaryTree } from './BinaryTree.js';
 import { AVLTree } from './AVLTree.js';
 
-// testRightRotataion();
+testRightRotataion();
 // testLeftRotataion();
 // testBigRightRotataion();
 // testBigLeftRotataion();
@@ -52,43 +52,40 @@ function testBigRightRotataion() {
 function testLeftRotataion() {
   const avlTree = new AVLTree();
 
-  const rotateNode = avlTree.insert(8);
-  avlTree.insert(5);
-  avlTree.insert(15);
-  avlTree.insert(10);
-  avlTree.insert(17);
-  avlTree.insert(16);
-  avlTree.insert(18);
-
-  console.log(avlTree.print());
-  console.log(avlTree.printTree());
-
-  avlTree.smallLeftRotation(rotateNode);
-
-  console.log(avlTree.print());
-  console.log(avlTree.printTree());
-
+  try {
+    avlTree.insert(5);
+    avlTree.insert(10);
+    avlTree.insert(15);
+    avlTree.insert(13);
+    avlTree.insert(20);
+    avlTree.insert(25);
+    avlTree.insert(30);
+  } catch (err) {
+    console.error(err);
+  } finally {
+    console.log(avlTree.print());
+    console.log(avlTree.printTree());
+  }
 }
 
 function testRightRotataion() {
   const avlTree = new AVLTree();
 
-  const rotateNode = avlTree.insert(11);
-  avlTree.insert(8);
-  avlTree.insert(15);
-  avlTree.insert(5);
-  avlTree.insert(2);
-  avlTree.insert(6);
-  avlTree.insert(9);
+  try {
+    avlTree.insert(30);
+    avlTree.insert(25);
+    avlTree.insert(20);
+    avlTree.insert(22);
+    avlTree.insert(15);
+    avlTree.insert(10);
+    avlTree.insert(5);
 
-  console.log(avlTree.print());
-  console.log(avlTree.printTree());
-
-  avlTree.smallRightRotation(rotateNode);
-
-  console.log(avlTree.print());
-  console.log(avlTree.printTree());
-
+  } catch (err) {
+    console.error(err);
+  } finally {
+    console.log(avlTree.print());
+    console.log(avlTree.printTree());
+  }
 }
 
 /*

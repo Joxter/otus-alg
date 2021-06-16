@@ -6,48 +6,45 @@ export class AVLTree extends BinaryTree {
     this.head = null;
   }
 
-  // rebalance(Tree t)
-
-  smallRightRotation(node) {
-    const oldL = node.L;
-    const oldParent = node.parent;
-    this.setL(node, node.L.R);
-    this.setR(oldL, node);
-
-    if (oldParent) {
-      if (oldParent.L === oldL) {
-        this.setL(oldParent, oldL);
+  // move "nodeB" to old "nodeA" place. "parent" MUST be a "nodeA" parent
+  replaceNode(parent, nodeA, nodeB) {
+    if (parent) {
+      if (parent.R === nodeA) {
+        this.setR(parent, nodeB);
       } else {
-        this.setR(oldParent, oldL);
+        this.setL(parent, nodeB);
       }
+    } else {
+      this.head = nodeB;
+      nodeB.parent = null;
     }
-
-    if (this.head === node) {
-      this.head = oldL;
-    }
-
-    this.recountNode(oldL);
   }
 
-  smallLeftRotation(node) {
-    const oldR = node.R;
-    const oldParent = node.parent;
-    this.setR(node, node.R.L);
-    this.setL(oldR, node);
+  smallRightRotation(nodeZ) {
+    console.log('smallRightRotation', nodeZ && nodeZ.value || 'NONE');
+    const oldParent = nodeZ.parent;
+    const nodeY = nodeZ.L;
+    const nodeT3 = nodeZ.L.R;
 
-    if (oldParent) {
-      if (oldParent.L === oldR) {
-        this.setR(oldParent, oldR);
-      } else {
-        this.setL(oldParent, oldR);
-      }
-    }
+    this.setL(nodeZ, nodeT3);
+    this.setR(nodeY, nodeZ);
+    this.replaceNode(oldParent, nodeZ, nodeY);
 
-    if (this.head === node) {
-      this.head = oldR;
-    }
+    return nodeZ;
+  }
 
-    this.recountNode(oldR);
+  // https://www.geeksforgeeks.org/avl-tree-set-1-insertion/
+  smallLeftRotation(nodeZ) {
+    console.log('smallLeftRotation', nodeZ && nodeZ.value || 'NONE');
+    const oldParent = nodeZ.parent;
+    const nodeY = nodeZ.R;
+    const nodeT2 = nodeZ.R.L;
+
+    this.setR(nodeZ, nodeT2);
+    this.setL(nodeY, nodeZ);
+    this.replaceNode(oldParent, nodeZ, nodeY);
+
+    return nodeZ;
   }
 
   bigRightRotation(node) {
@@ -64,15 +61,16 @@ export class AVLTree extends BinaryTree {
 
   setR(base, node) { // todo create as Node class method
     base.R = node;
-    node.parent = base;
+    if (node) node.parent = base;
   }
 
   setL(base, node) { // todo create as Node class method
     base.L = node;
-    node.parent = base;
+    if (node) node.parent = base;
   }
 
   insert(value) {
+    console.log('insert', value);
     const node = {
       value,
       deep: 1,
@@ -104,19 +102,67 @@ export class AVLTree extends BinaryTree {
       }
     }
 
-    this.recountNode(node.parent);
+    const balanceNode = this.recountNode(node.parent);
+    if (balanceNode) {
+      this.rebalance(balanceNode);
+    }
 
     return node;
   }
 
+  rebalance(node) {
+    const [deepL, deepR] = this.getDeep(node);
+    console.log('rebalance', node.value);
+
+    if (deepR > deepL) {
+      const [deepRL, deepRR] = this.getDeep(node.R);
+
+      if (deepRL <= deepRR) {
+        const recount = this.smallLeftRotation(node);
+        this.recountNode(recount);
+      } else {
+        // big rotate
+      }
+    } else { // if (deepR < deepL)
+      const [deepLL, deepLR] = this.getDeep(node.L);
+
+      if (deepLL >= deepLR) {
+        const recount = this.smallRightRotation(node);
+        this.recountNode(recount);
+      } else {
+        // big rotate
+      }
+    }
+  }
+
+  getDeep(node) {
+    return [this.getDeepL(node), this.getDeepR(node)];
+  }
+
+  getDeepL(node) {
+    return node.L && node.L.deep || 0;
+  }
+
+  getDeepR(node) {
+    return node.R && node.R.deep || 0;
+  }
+
   recountNode(node) {
-    const max = Math.max(node.L && node.L.deep || 0, node.R && node.R.deep || 0);
+    const deepL = this.getDeepL(node);
+    const deepR = this.getDeepR(node);
+
+    const max = Math.max(deepL, deepR);
     const oldDeep = node.deep;
 
     node.deep = max + 1;
 
+    const delta = Math.abs(deepL - deepR);
+    if (delta > 1) {
+      return node;
+    }
+
     if (oldDeep !== node.deep && node.parent) {
-      this.recountNode(node.parent);
+      return this.recountNode(node.parent);
     }
   }
 
