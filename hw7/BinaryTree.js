@@ -127,17 +127,20 @@ export class BinaryTree {
 
   print() {
     let log = '';
-    const _print = (node) => {
-      if (!node) {
-        return;
+    let stack = [];
+    let curr = this.head;
+
+    while (stack.length > 0 || curr) {
+      while (curr) {
+        stack.push(curr);
+        curr = curr.L;
       }
+      curr = stack.pop();
 
-      _print(node.L);
-      log += ' ' + node.value;
-      _print(node.R);
-    };
+      log += ' ' + curr.value;
+      curr = curr && curr.R;
+    }
 
-    _print(this.head);
     return log;
   }
 
@@ -154,6 +157,16 @@ export class BinaryTree {
     function _print(node, level) {
       if (offsets.length <= level) return;
 
+      if (node) {
+        if (node.L && node.L.parent !== node) {
+          const message = `!!! wrong parent in node(${node.L.value}) expect/fact: (${node.value}/${node.L.parent && node.L.parent.value})`;
+          throw new Error(message);
+        }
+        if (node.R && node.R.parent !== node) {
+          const message = `!!! wrong parent in node(${node.R.value}) expect/fact: (${node.value}/${node.R.parent && node.R.parent.value})`;
+          throw new Error(message);
+        }
+      }
       _print(node && node.L, level + 1);
       log[level].push(node ? (node.deep * 100 + node.value) : null); //  value deep
       _print(node && node.R, level + 1);

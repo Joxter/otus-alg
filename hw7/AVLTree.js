@@ -21,7 +21,7 @@ export class AVLTree extends BinaryTree {
   }
 
   smallRightRotation(nodeZ) {
-    console.log('smallRightRotation', nodeZ && nodeZ.value || 'NONE');
+    // console.log('smallRightRotation', nodeZ && nodeZ.value || 'NONE');
     const oldParent = nodeZ.parent;
     const nodeY = nodeZ.L;
     const nodeT3 = nodeZ.L.R;
@@ -35,7 +35,7 @@ export class AVLTree extends BinaryTree {
 
   // https://www.geeksforgeeks.org/avl-tree-set-1-insertion/
   smallLeftRotation(nodeZ) {
-    console.log('smallLeftRotation', nodeZ && nodeZ.value || 'NONE');
+    // console.log('smallLeftRotation', nodeZ && nodeZ.value || 'NONE');
     const oldParent = nodeZ.parent;
     const nodeY = nodeZ.R;
     const nodeT2 = nodeZ.R.L;
@@ -47,16 +47,20 @@ export class AVLTree extends BinaryTree {
     return nodeZ;
   }
 
-  bigRightRotation(node) {
-    this.smallLeftRotation(node.L);
-    this.smallRightRotation(node);
-    this.recountNode(node.parent.L);
+  bigRightRotation(nodeZ) {
+    // console.log('bigRightRotation', nodeZ && nodeZ.value || 'NONE');
+    const nodeY = nodeZ.L;
+    this.smallLeftRotation(nodeY);
+    this.smallRightRotation(nodeZ);
+    return [nodeY, nodeZ];
   }
 
-  bigLeftRotation(node) {
-    this.smallRightRotation(node.R);
-    this.smallLeftRotation(node);
-    this.recountNode(node.parent.R);
+  bigLeftRotation(nodeZ) {
+    // console.log('bigLeftRotation', nodeZ && nodeZ.value || 'NONE');
+    const nodeY = nodeZ.R;
+    this.smallRightRotation(nodeY);
+    this.smallLeftRotation(nodeZ);
+    return [nodeY, nodeZ];
   }
 
   setR(base, node) { // todo create as Node class method
@@ -70,7 +74,7 @@ export class AVLTree extends BinaryTree {
   }
 
   insert(value) {
-    console.log('insert', value);
+    // console.log('insert', value);
     const node = {
       value,
       deep: 1,
@@ -112,7 +116,7 @@ export class AVLTree extends BinaryTree {
 
   rebalance(node) {
     const [deepL, deepR] = this.getDeep(node);
-    console.log('rebalance', node.value);
+    // console.log('rebalance', node.value);
 
     if (deepR > deepL) {
       const [deepRL, deepRR] = this.getDeep(node.R);
@@ -121,7 +125,9 @@ export class AVLTree extends BinaryTree {
         const recount = this.smallLeftRotation(node);
         this.recountNode(recount);
       } else {
-        // big rotate
+        const [one, two] = this.bigLeftRotation(node)
+        this.recountNode(one);
+        this.recountNode(two);
       }
     } else { // if (deepR < deepL)
       const [deepLL, deepLR] = this.getDeep(node.L);
@@ -130,7 +136,9 @@ export class AVLTree extends BinaryTree {
         const recount = this.smallRightRotation(node);
         this.recountNode(recount);
       } else {
-        // big rotate
+        const [one, two] = this.bigRightRotation(node)
+        this.recountNode(one);
+        this.recountNode(two);
       }
     }
   }
@@ -181,7 +189,7 @@ export class AVLTree extends BinaryTree {
         target = target.L;
       }
       if (!target) {
-        console.log(`There is no ${value} in the tree`);
+        // console.log(`There is no ${value} in the tree`);
         return;
       }
     }
