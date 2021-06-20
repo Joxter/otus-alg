@@ -1,22 +1,20 @@
 export function maxSarah_N2(map) {
   let result = 0;
 
-  const heights = getHeights(map);
-  const weights = [];
-  for (let i = 0; i < heights.length; i++) {
-    weights[i] = getWeight(heights[i]);
-  }
-
+  const heights = Array(map[0].length).fill(0);
   for (let i = 0; i < map.length; i++) {
+
     for (let j = 0; j < map[i].length; j++) {
-      if (map[i][j] === 1) continue;
+      heights[j] = map[i][j] === 1 ? 0 : heights[j] + 1;
+    }
+    const [left, right] = getLeftRight(heights);
 
-      let height = heights[i][j];
-      let width = weights[i][j];
-
-      let square = width * height;
-      if (square > result) {
-        result = square;
+    for (let j = 0; j < map[i].length; j++) {
+      if (map[i][j] === 0) {
+        let square = (right[j] - left[j] + 1) * heights[j];
+        if (square > result) {
+          result = square;
+        }
       }
     }
   }
@@ -24,24 +22,7 @@ export function maxSarah_N2(map) {
   return result;
 }
 
-function getHeights(map) {
-  const heights = Array(map.length);
-
-  for (let i = 0; i < map.length; i++) {
-    heights[i] = Array(map.length);
-    for (let j = 0; j < map[i].length; j++) {
-      if (map[i][j] === 1) {
-        heights[i][j] = 0;
-      } else {
-        heights[i][j] = i >= 1 ? heights[i - 1][j] + 1 : 1;
-      }
-    }
-  }
-
-  return heights;
-}
-
-function getWeight(row) {
+function getLeftRight(row) {
   let stack = [];
   const right = Array(row.length);
 
@@ -64,10 +45,5 @@ function getWeight(row) {
   }
   while (stack.length > 0) left[stack.pop()] = 0;
 
-  const width = Array(row.length);
-  for (let i = 0; i < row.length; i++) {
-    width[i] = right[i] - left[i] + 1;
-  }
-
-  return width;
+  return [left, right];
 }
