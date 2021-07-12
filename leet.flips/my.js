@@ -50,24 +50,22 @@ function isZero(mat) {
 function getSubsets(arr, len, cb) {
   let exit;
 
-  function fn(arr, len, ind) {
+  function fn(comb, lastInd) {
     if (exit) return;
-    if (ind.length === len) {
-      let end = cb(ind);
+    if (comb.length === len) {
+      let end = cb(comb);
       if (end) exit = end;
       return;
     }
 
-    let from = ind[ind.length - 1] || 0;
-    let to = arr.length - len + ind.length;
+    let from = lastInd;
+    let to = arr.length - len + comb.length;
 
     for (let i = from; i <= to; i++) {
-      if (i !== ind[ind.length - 1]) {
-        fn(arr, len, [...ind, i]);
-      }
+      fn([...comb, arr[i]], i + 1);
     }
   }
 
-  fn(arr, len, []);
+  fn([], 0);
   return exit;
 }
